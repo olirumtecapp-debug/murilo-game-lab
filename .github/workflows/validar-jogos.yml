@@ -1,0 +1,26 @@
+name: Validar jogos otimizados
+
+on:
+  push:
+    branches:
+      - otimizacao-jogos-2026
+    paths:
+      - 'games/**'
+      - 'tools/validar-jogos.py'
+      - '.github/workflows/validar-jogos.yml'
+  pull_request:
+    paths:
+      - 'games/**'
+      - 'tools/validar-jogos.py'
+      - '.github/workflows/validar-jogos.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Conferir JavaScript dos cinco jogos
+        run: python3 tools/validar-jogos.py
