@@ -15,7 +15,7 @@ class Scripts(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "script":
             a = dict(attrs)
-            self.capture = "src" not in a
+            self.capture = "src" not in a and a.get("type", "").lower() in ("", "text/javascript", "application/javascript", "module")
             self.kind = "module" if a.get("type") == "module" else "classic"
             self.current = []
     def handle_data(self, data):
