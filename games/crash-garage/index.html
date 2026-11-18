@@ -888,7 +888,38 @@ function update(dt,now){
  }
  if(state==='paused'||state==='finished')renderer.render(raceScene,cam);
 }
-let slowFrames=0,renderScale=Math.min(devicePixelRatio||1,1.10);function loop(now){requestAnimationFrame(loop);const dt=clamp((now-lastFrame)/1000,0,.05);lastFrame=now;if(document.hidden)return;if(state==='race'){slowFrames=dt>.032?slowFrames+1:Math.max(0,slowFrames-2);if(slowFrames>80 && renderScale>.74){renderScale=Math.max(.74,renderScale-.12);renderer.setPixelRatio(renderScale);slowFrames=0;}}try{update(dt,now);}catch(e){console.error('Erro do loop de jogo:',e);$('loadstatus').textContent=e.message||String(e);}}
+// Ajuste de resolução com histerese: só reduz após lentidão sustentada e recupera a nitidez quando estabiliza.
+const maxRenderScale=Math.min(devicePixelRatio||1,1.10),minRenderScale=Math.min(maxRenderScale,.82);
+let renderScale=maxRenderScale,perfWindowStart=0,perfFrames=0,lowFpsSeconds=0,highFpsSeconds=0,lastScaleChange=0,lastIdleRender=0;
+const showPerf=new URLSearchParams(location.search).has('perf');
+const perfPanel=showPerf?document.createElement('div'):null;
+if(perfPanel){perfPanel.style.cssText='position:fixed;left:12px;bottom:12px;z-index:10000;background:#07121ee0;border:1px solid #ffffff55;color:#d8f7e6;padding:7px 11px;border-radius:7px;font:12px monospace;pointer-events:none';perfPanel.textContent='Medindo FPS…';document.body.appendChild(perfPanel);}
+function loop(now){
+ requestAnimationFrame(loop);
+ const elapsed=Math.max(0,(now-lastFrame)/1000),dt=clamp(elapsed,0,.05);lastFrame=now;
+ if(document.hidden){perfWindowStart=0;perfFrames=0;lowFpsSeconds=0;highFpsSeconds=0;return;}
+ if(state==='paused'||state==='finished'){
+  if(now-lastIdleRender<250)return;lastIdleRender=now;
+ }
+ if(state==='race'){
+  if(!perfWindowStart)perfWindowStart=now;
+  perfFrames++;
+  const windowSeconds=(now-perfWindowStart)/1000;
+  if(windowSeconds>=1){
+   const fps=perfFrames/windowSeconds;
+   if(perfPanel)perfPanel.textContent=fps.toFixed(0)+' FPS · escala '+renderScale.toFixed(2)+' · '+renderer.info.render.calls+' draws';
+   lowFpsSeconds=fps<43?lowFpsSeconds+windowSeconds:0;
+   highFpsSeconds=fps>56?highFpsSeconds+windowSeconds:0;
+   if(now-lastScaleChange>3500&&lowFpsSeconds>=3&&renderScale>minRenderScale+.005){
+    renderScale=Math.max(minRenderScale,renderScale-.08);renderer.setPixelRatio(renderScale);lastScaleChange=now;lowFpsSeconds=0;
+   }else if(now-lastScaleChange>6000&&highFpsSeconds>=6&&renderScale<maxRenderScale-.005){
+    renderScale=Math.min(maxRenderScale,renderScale+.06);renderer.setPixelRatio(renderScale);lastScaleChange=now;highFpsSeconds=0;
+   }
+   perfWindowStart=now;perfFrames=0;
+  }
+ }else{perfWindowStart=0;perfFrames=0;lowFpsSeconds=0;highFpsSeconds=0;}
+ try{update(dt,now);}catch(e){console.error('Erro do loop de jogo:',e);$('loadstatus').textContent=e.message||String(e);}
+}
 window.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code))e.preventDefault();keys.add(e.code);if(e.repeat)return;
 if(e.code==='Escape'){if(state==='race'||state==='countdown')pauseRace();else if(state==='paused')resumeRace();}
 if(e.code==='KeyC'&&state==='race')cameraMode=(cameraMode+1)%4;
