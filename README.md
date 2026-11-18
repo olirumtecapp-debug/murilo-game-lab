@@ -1,27 +1,39 @@
-# Murilo Game Lab 🎮
+# 🎮 Murilo Game Lab
 
-Portfólio de jogos e simuladores desenvolvidos pelo Murilo.
+Laboratório de jogos e simuladores do Murilo.
 
 ## Portal
-A página principal está em [index.html](index.html) e contém o catálogo de jogos. Para publicá-la, habilite **Settings > Pages > Deploy from a branch > main > /(root)**.
+O portal está em [index.html](./index.html). Para publicar com GitHub Pages: **Settings → Pages → Build and deployment → Deploy from a branch → main / (root) → Save**.
+
+Após a publicação, o endereço esperado será: https://olirumtecapp-debug.github.io/murilo-game-lab/
 
 ## Jogos publicados no repositório
 
-| Projeto | Pasta | Versão |
-|---|---|---|
-| Vortex Drive | [games/vortex-drive](games/vortex-drive/) | V8 volumétrico |
-| Bombs'n Roses | [games/bombs-n-roses](games/bombs-n-roses/) | V23 |
-| Tornado Simulator (clássico) | [games/tornado-classic](games/tornado-classic/) | V3 |
+| Jogo | Pasta | Estado |
+| --- | --- | --- |
+| Vortex Drive V8 | [games/vortex-drive](./games/vortex-drive/) | HTML original publicado; validação gráfica no navegador pendente |
+| Bombs'n Roses V23 | [games/bombs-n-roses](./games/bombs-n-roses/) | HTML publicado; validação no navegador pendente |
+| Tornado Simulator clássico | [games/tornado-classic](./games/tornado-classic/) | HTML publicado; validação no navegador pendente |
 
-## Arquivos recebidos, aguardando publicação
+## Jogos recebidos, ainda não importados
 
-- **Crash Garage V5.5:** HTML de cerca de 60 MB com modelos embutidos; depende da biblioteca Three.js carregada pela internet.
-- **Skyfall CXIV:** HTML de cerca de 23 MB com recursos embutidos; sem dependências externas identificadas.
+- **Crash Garage V5.5** — arquivo HTML de aproximadamente 62,6 MB, com modelos 3D incorporados e dependência externa de Three.js.
+- **Skyfall CXIV** — arquivo HTML de aproximadamente 23,4 MB, com imagens incorporadas.
 
-Os arquivos de Crash Garage e Skyfall ainda **não foram publicados no GitHub**: o envio de um arquivo grande pela integração falhou. Uma alternativa é usar GitHub Desktop / git para colocá-los no repositório, respeitando os limites do serviço.
+**Atenção:** os dois jogos acima não estão disponíveis nos botões do portal até a importação e a verificação. O GitHub possui limites para uploads por determinadas APIs; não vamos substituir os arquivos originais por versões incompletas.
 
-## Organização dos próximos jogos
+## Estrutura e regras
 
-Cada jogo terá sua pasta em `games/<nome>/`, com arquivo principal `index.html`. Novas alterações devem ser feitas neste repositório e manter histórico de versões.
+- `index.html`: portal.
+- `games/<nome>/`: um projeto por pasta.
+- Ao refatorar, separar HTML, CSS, JavaScript e recursos em `assets/` sem modificar o comportamento.
+- Manter uma cópia da versão original e verificar integridade antes de substituir.
+- Não publicar senhas, tokens ou dados privados.
+- GitHub público permite consultar o código-fonte; dividir arquivos não impede cópias.
 
-O repositório é **público**. Não coloque senhas ou materiais pessoais. Jogos que usam WebGL podem exigir um navegador moderno com aceleração gráfica. O GitHub Pages precisa ser habilitado uma vez para o portal ficar disponível.
+## Próximos passos
+
+1. Importar Crash Garage e Skyfall com todos os recursos.
+2. Adicionar cartões dos dois jogos ao portal após a importação.
+3. Ativar GitHub Pages nas configurações do repositório.
+4. Testar cada jogo pelo endereço publicado.
