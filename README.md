@@ -7,20 +7,19 @@ O portal está em [index.html](./index.html). Para publicar com GitHub Pages: **
 
 Após a publicação, o endereço esperado será: https://olirumtecapp-debug.github.io/murilo-game-lab/
 
-## Jogos publicados no repositório
+## Jogos disponíveis no repositório
 
-| Jogo | Pasta | Estado |
+| Jogo | Pasta | Situação |
 | --- | --- | --- |
-| Vortex Drive V8 | [games/vortex-drive](./games/vortex-drive/) | HTML original publicado; validação gráfica no navegador pendente |
-| Bombs'n Roses V23 | [games/bombs-n-roses](./games/bombs-n-roses/) | HTML publicado; validação no navegador pendente |
-| Tornado Simulator clássico | [games/tornado-classic](./games/tornado-classic/) | HTML publicado; validação no navegador pendente |
+| Vortex Drive V8 | [games/vortex-drive](./games/vortex-drive/) | Publicado no repositório |
+| Bombs'n Roses V23 | [games/bombs-n-roses](./games/bombs-n-roses/) | Publicado no repositório |
+| Tornado Simulator clássico | [games/tornado-classic](./games/tornado-classic/) | Publicado no repositório |
+| Crash Garage V5.5 | [games/crash-garage](./games/crash-garage/) | Extraído dos ZIPs e integrado ao portal |
+| Skyfall CXIV | [games/skyfall](./games/skyfall/) | Extraído dos ZIPs e integrado ao portal |
 
-## Jogos recebidos, ainda não importados
+Os arquivos ZIP originais do Crash Garage e Skyfall foram preservados em `games/crash-garage/` como cópias de origem. O fluxo `.github/workflows/importar-jogos.yml` faz a extração automática no GitHub Actions.
 
-- **Crash Garage V5.5** — arquivo HTML de aproximadamente 62,6 MB, com modelos 3D incorporados e dependência externa de Three.js.
-- **Skyfall CXIV** — arquivo HTML de aproximadamente 23,4 MB, com imagens incorporadas.
-
-**Atenção:** os dois jogos acima não estão disponíveis nos botões do portal até a importação e a verificação. O GitHub possui limites para uploads por determinadas APIs; não vamos substituir os arquivos originais por versões incompletas.
+**Importante:** presença dos arquivos e links no portal foi verificada; testes completos de execução gráfica dos jogos no navegador ainda estão pendentes. O GitHub Pages precisa estar ativado para abrir os links pela hospedagem pública.
 
 ## Estrutura e regras
 
