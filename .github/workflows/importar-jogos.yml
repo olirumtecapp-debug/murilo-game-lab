@@ -1,0 +1,59 @@
+name: Importar jogos dos ZIPs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'games/crash-garage/*.zip'
+      - '.github/workflows/importar-jogos.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  importar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Verificar e extrair arquivos
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="games/crash-garage"
+          for file in crash_garage_parte_1.zip crash_garage_parte_2.zip skyfall_completo.zip; do
+            test -s "$base/$file"
+            unzip -tq "$base/$file"
+          done
+          mkdir -p games/skyfall
+          unzip -oq "$base/crash_garage_parte_1.zip" -d "$base"
+          unzip -oq "$base/crash_garage_parte_2.zip" -d "$base"
+          unzip -oq "$base/skyfall_completo.zip" -d games/skyfall
+          for file in \
+            games/crash-garage/index.html \
+            games/crash-garage/vehicles-a.js \
+            games/crash-garage/vehicles-b.js \
+            games/crash-garage/vehicles-c.js \
+            games/skyfall/index.html \
+            games/skyfall/game.js \
+            games/skyfall/detailed-road-assets.js; do
+            test -s "$file"
+          done
+          echo "Todos os sete arquivos foram extraídos."
+      - name: Registrar jogos extraídos no GitHub
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/crash-garage/index.html games/crash-garage/vehicles-a.js games/crash-garage/vehicles-b.js games/crash-garage/vehicles-c.js
+          git add games/skyfall/index.html games/skyfall/game.js games/skyfall/detailed-road-assets.js
+          if git diff --cached --quiet; then
+            echo "Os jogos já estavam importados."
+          else
+            git commit -m "Extrair Crash Garage e Skyfall dos ZIPs recebidos"
+            git push origin HEAD:main
+          fi
