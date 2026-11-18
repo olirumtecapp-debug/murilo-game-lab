@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0d18">
+<meta name="description" content="Murilo Game Lab: jogos e simuladores interativos feitos pelo Murilo.">
+<title>Murilo Game Lab — Jogos e Simuladores</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0d18;--surface:#151a2b;--edge:#ffffff25;--text:#f8f8ff;--sub:#aeb6cb;--purple:#afa4ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--text);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(ellipse 70% 41% at 93% -10%,#644bb240,transparent 69%),radial-gradient(ellipse 45% 40% at 0% 67%,#167f8033,transparent 70%),var(--bg)}
+a{color:inherit;text-decoration:none}button,input{font:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #9beeff;outline-offset:3px}
+.container{width:min(1170px,calc(100% - 44px));margin:auto}
+.skip{position:absolute;top:-80px;left:10px;padding:10px;background:white;color:black;z-index:100}.skip:focus{top:10px}
+header{position:sticky;top:0;z-index:30;background:#0b0e18e3;border-bottom:1px solid var(--edge);backdrop-filter:blur(15px)}
+nav{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:inline-flex;align-items:center;gap:11px;font-size:15px;font-weight:900;letter-spacing:.04em;white-space:nowrap}
+.brand small{color:#a3a8bf;font-weight:500}
+.logo{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,#c6b5ff,#6b7dce);color:#16122d;display:grid;place-items:center;font-size:24px;font-weight:1000;box-shadow:0 8px 26px #8e78ff4d}
+.links{display:flex;gap:25px;align-items:center}.links a{font-size:13px;color:#d1d4e4;font-weight:700}.links a:hover{color:white}
+.links .outline{padding:9px 15px;border:1px solid #ffffff30;border-radius:100px}
+.hero{padding:70px 0 95px;min-height:510px;display:grid;grid-template-columns:1.08fr .92fr;gap:28px;align-items:center}
+.eyebrow,.kicker{color:#bcb3ff;letter-spacing:.20em;font-size:11px;font-weight:900;text-transform:uppercase}
+.eyebrow{display:flex;align-items:center;gap:10px}.eyebrow:before{content:"";width:7px;height:7px;background:#82eed7;border-radius:50%;box-shadow:0 0 12px #82eed7}
+h1{font-size:clamp(51px,6.6vw,86px);font-weight:900;letter-spacing:-.07em;line-height:1.025;margin:27px 0 24px}
+h1 span{background:linear-gradient(105deg,#b8a9ff,#85e9fc);color:transparent;background-clip:text}
+.lead{font-size:17px;line-height:1.72;max-width:510px;color:#adb5cd;margin:0 0 30px}
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 21px;min-height:48px;border-radius:12px;border:1px solid #ffffff30;font-weight:850;font-size:13px;transition:transform .2s,box-shadow .2s}
+.button:hover{transform:translateY(-3px)}
+.primary{background:#b9adff;color:#19122b;border-color:#b9adff;box-shadow:0 10px 32px #8b73fa36}
+.secondary{background:#ffffff0a;color:#edf0ff}
+.hero-art{position:relative;height:375px;display:grid;place-items:center;filter:drop-shadow(0 20px 50px #0006)}
+.hero-art:before{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,#6958c04d,transparent 66%);filter:blur(25px)}
+.hero-art svg{position:relative;width:min(100%,480px);height:auto}
+.floating{position:absolute;top:10%;right:1%;background:#141b2cf0;border:1px solid #ffffff38;padding:12px 16px;border-radius:13px;font-size:11px;color:#90e4ec;letter-spacing:.1em;transform:rotate(6deg);box-shadow:0 12px 30px #0008}
+.floating strong{color:white;display:block;letter-spacing:0;font-size:15px}
+.stats{display:flex;flex-wrap:wrap;gap:21px;margin-top:29px;color:#98a3bc;font-size:12px}.stats b{color:#f2efff}
+section{scroll-margin-top:94px;padding:0 0 95px}
+.section-top{display:flex;align-items:end;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:25px}
+h2{font-size:clamp(30px,4vw,43px);letter-spacing:-.06em;line-height:1.15;margin:8px 0}
+.sub{color:#9ea9c1;font-size:14px;margin:0}
+.count{color:#d1d5e7;background:#141b2c;border:1px solid var(--edge);border-radius:99px;padding:9px 15px;font-size:12px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:13px;flex-wrap:wrap;margin-bottom:25px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}.filters button{color:#b0bad0;border:1px solid var(--edge);border-radius:99px;background:#ffffff04;padding:10px 17px;cursor:pointer;font-size:12px;font-weight:800}
+.filters button:hover{border-color:#afa4ff;color:white}
+.filters button[aria-pressed="true"]{background:#b9adff;border-color:#b9adff;color:#140e24}
+#search{background:#151b2c;border:1px solid var(--edge);color:white;border-radius:11px;padding:10px 14px;height:43px;min-width:min(255px,100%);font-size:13px}
+#search::placeholder{color:#8690a8}
+.games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.game{border:1px solid var(--edge);background:linear-gradient(145deg,#1b2031,#111524);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:transform .2s,border-color .2s,box-shadow .2s}
+.game:hover{transform:translateY(-5px);border-color:#a7a0f8a0;box-shadow:0 18px 42px #0006}
+.game[hidden]{display:none}
+.art{height:190px;position:relative;overflow:hidden;isolation:isolate}
+.art:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,#151a2b);pointer-events:none}
+.art svg{width:100%;height:100%;display:block}
+.type{position:absolute;left:15px;top:15px;z-index:2;background:#101425bc;border:1px solid #ffffff50;backdrop-filter:blur(8px);border-radius:99px;padding:5px 10px;color:#e1e5fa;font-size:10px;text-transform:uppercase;letter-spacing:.09em;font-weight:800}
+.game-body{padding:21px;display:flex;flex-direction:column;flex:1}
+.cat{color:#b2a9ff;font-size:11px;font-weight:850;letter-spacing:.09em;text-transform:uppercase}
+h3{font-size:22px;letter-spacing:-.04em;line-height:1.2;margin:9px 0}
+.game p{color:#acb4ca;font-size:13px;line-height:1.65;flex:1;margin:0 0 21px}
+.game .button{width:100%;min-height:42px;font-size:12px}
+#empty{display:none;color:#b7bed4;padding:28px 0}
+.note{border:1px solid #ffffff25;border-radius:14px;padding:18px 20px;background:#ffffff07;margin:32px 0 0;color:#b9c0d3;font-size:13px}.note strong{color:white}
+footer{border-top:1px solid var(--edge);padding:30px 0;color:#9ca6bf;font-size:13px}.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.foot b{color:#eaeafa}
+@media(max-width:960px){.hero{grid-template-columns:1fr;padding:65px 0 55px}.hero-art{height:310px}.hero-art svg{max-width:435px}.games{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.container{width:min(100% - 30px,1170px)}.hero{padding:52px 0 57px;min-height:0}h1{font-size:57px}.lead{font-size:15px}.hero-art{display:none}.games{grid-template-columns:1fr}.links>a:first-child{display:none}.links .outline{padding:8px 12px;font-size:11px}.brand{font-size:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.game,.button{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#projetos">Ir para os projetos</a>
+<header><div class="container"><nav aria-label="Navegação principal">
+<a class="brand" href="./"><span class="logo">M</span><span>MURILO <small>GAME LAB</small></span></a>
+<div class="links"><a href="#projetos">Projetos</a><a class="outline" href="https://github.com/olirumtecapp-debug/murilo-game-lab" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+</nav></div></header>
+<main class="container">
+<div class="hero"><div>
+<div class="eyebrow">Laboratório de jogos e ideias</div>
+<h1>O próximo<br><span>universo</span><br>começa aqui.</h1>
+<p class="lead">Jogos, simuladores e experiências criados pelo Murilo. De tornados gigantes a mundos experimentais, cada projeto é uma nova aventura para descobrir e desenvolver.</p>
+<div class="actions"><a class="button primary" href="#projetos">Explorar projetos ↘</a><a class="button secondary" href="https://github.com/olirumtecapp-debug/murilo-game-lab" target="_blank" rel="noopener noreferrer">Ver código no GitHub ↗</a></div>
+<div class="stats"><span><b>03</b> jogos iniciais</span><span>Projetos em evolução</span><span>Novos jogos em breve</span></div>
+</div>
+<div class="hero-art" aria-hidden="true">
+<svg viewBox="0 0 470 400" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="screen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#647ab7"/><stop offset=".47" stop-color="#3e456f"/><stop offset="1" stop-color="#121e33"/></linearGradient><linearGradient id="twister" x1="0" y1="0" x2="1" y2=".9"><stop stop-color="#c5d6f9" stop-opacity=".75"/><stop offset=".6" stop-color="#73769f" stop-opacity=".6"/><stop offset="1" stop-color="#454e76" stop-opacity=".9"/></linearGradient></defs>
+<g transform="rotate(-8 235 196)">
+<rect x="36" y="47" width="395" height="290" rx="27" fill="#1a2034" stroke="#e7e2ff77" stroke-width="2"/>
+<rect x="48" y="60" width="371" height="265" rx="18" fill="url(#screen)"/>
+<path d="M48 234 Q116 158 211 200 Q287 177 419 159 L419 325 L48 325Z" fill="#20263e" opacity=".65"/>
+<path d="M48 288 Q175 230 265 258 Q359 261 419 218 L419 325 L48 325Z" fill="#151c2d"/>
+<g opacity=".6" fill="#b2c7e7"><ellipse cx="203" cy="117" rx="118" ry="29"/><ellipse cx="292" cy="105" rx="107" ry="30"/><ellipse cx="348" cy="133" rx="66" ry="23"/></g>
+<path d="M189 134 C197 177 219 200 235 237 C247 265 245 288 259 318 L308 318 C295 272 314 259 325 222 C338 180 352 159 362 132 Z" fill="url(#twister)"/>
+<path d="M229 143 Q235 181 258 224 Q281 267 281 314 M318 153 Q294 189 301 220 Q280 267 292 317" fill="none" stroke="#ede9ff" stroke-opacity=".25" stroke-width="11"/>
+<path d="M194 175 Q264 184 341 175 M217 212 Q271 230 324 207 M243 262 Q279 250 313 260 M254 291 Q281 297 309 284" stroke="#a9b6dd" stroke-width="5" stroke-opacity=".32" fill="none"/>
+<ellipse cx="282" cy="315" rx="80" ry="9" fill="#0b1021" opacity=".64"/>
+</g>
+<g transform="rotate(7 256 331)"><rect x="122" y="317" width="270" height="57" rx="15" fill="#1c2540" stroke="#b0baff8c" stroke-width="2"/><rect x="147" y="339" width="26" height="9" rx="3" fill="#b0a3ff"/><rect x="155" y="330" width="9" height="27" rx="3" fill="#b0a3ff"/><circle cx="347" cy="346" r="9" fill="#b0a3ff"/><circle cx="368" cy="335" r="8" fill="#75daec"/></g>
+<circle cx="78" cy="88" r="3" fill="#b5eaff"/><circle cx="444" cy="92" r="4" fill="#b5eaff"/>
+</svg>
+<div class="floating">EM DESENVOLVIMENTO<strong>VORTEX DRIVE 🌪️</strong></div>
+</div></div>
+<section id="projetos">
+<div class="section-top"><div><div class="kicker">Explore o laboratório</div><h2>Escolha seu próximo jogo</h2><p class="sub">Protótipos disponíveis para abrir direto no navegador.</p></div><div class="count"><span id="visible-count">3</span> projetos</div></div>
+<div class="toolbar"><div class="filters" aria-label="Filtrar projetos"><button type="button" data-filter="todos" aria-pressed="true">Todos</button><button type="button" data-filter="tornado" aria-pressed="false">Tornados</button><button type="button" data-filter="simulacao" aria-pressed="false">Simulação</button></div><input type="search" id="search" aria-label="Buscar projetos" placeholder="Buscar jogo..."></div>
+<div class="games" id="games">
+<article class="game" data-cat="tornado" data-search="vortex drive tornado volumetrico storm chasing carro tempestade">
+<div class="art"><div class="type">V8 · Experimental</div>
+<svg viewBox="0 0 380 205" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="vbg" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#475079"/><stop offset=".55" stop-color="#222f43"/><stop offset="1" stop-color="#121d25"/></linearGradient><linearGradient id="vf"><stop stop-color="#c4c9de" stop-opacity=".65"/><stop offset="1" stop-color="#41495b"/></linearGradient></defs><rect width="380" height="205" fill="url(#vbg)"/><path d="M0 131 Q104 117 184 139 T380 120 L380 205 L0 205Z" fill="#293e33"/><path d="M0 177 Q174 148 380 176 L380 205 L0 205Z" fill="#1b292b"/><g fill="#8794ae" opacity=".7"><ellipse cx="175" cy="50" rx="134" ry="35"/><ellipse cx="253" cy="65" rx="123" ry="42"/><ellipse cx="104" cy="74" rx="100" ry="34"/></g><path d="M133 63 Q149 101 162 121 Q176 150 170 193 L230 193 Q210 153 231 115 Q254 90 266 66Z" fill="url(#vf)"/><path d="M146 89 Q190 94 250 92 M155 119 Q192 128 233 116 M166 151 Q190 163 222 147" stroke="#d7d8e6" stroke-opacity=".28" stroke-width="7" fill="none"/><ellipse cx="199" cy="195" rx="66" ry="10" fill="#202631" opacity=".6"/></svg></div>
+<div class="game-body"><div class="cat">Storm chasing · Dirigir</div><h3>Vortex Drive</h3><p>Caça a tempestades com tornados volumétricos, supercélulas, carro dirigível e cenários com destruição EF5.</p><a class="button primary" href="./games/vortex-drive/">▶ Jogar Vortex Drive</a></div></article>
+<article class="game" data-cat="simulacao" data-search="bombs n roses explosoes ondas de choque aviao bombas simulacao">
+<div class="art"><div class="type">V23 · Experimental</div>
+<svg viewBox="0 0 380 205" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="bb"><stop stop-color="#fff8bc"/><stop offset=".32" stop-color="#ffb85a"/><stop offset=".65" stop-color="#d55938"/><stop offset="1" stop-color="#452b3a"/></radialGradient><linearGradient id="bc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5d3b55"/><stop offset="1" stop-color="#1a1b2a"/></linearGradient></defs><rect width="380" height="205" fill="url(#bc)"/><path d="M0 155 Q110 122 215 145 T380 137 L380 205 L0 205Z" fill="#242a2e"/><ellipse cx="188" cy="162" rx="125" ry="17" fill="#f19359" opacity=".3"/><ellipse cx="188" cy="153" rx="44" ry="50" fill="#70414a"/><rect x="166" y="88" width="44" height="79" rx="19" fill="#ad624c"/><circle cx="188" cy="74" r="82" fill="url(#bb)"/><g opacity=".58" fill="#d7835b"><circle cx="115" cy="96" r="28"/><circle cx="245" cy="94" r="30"/><circle cx="152" cy="27" r="29"/><circle cx="231" cy="25" r="25"/></g></svg></div>
+<div class="game-body"><div class="cat">Efeitos · Física</div><h3>Bombs'n Roses</h3><p>Experimentos de explosões com ondas de choque, fumaça, terrenos e cenários destrutíveis.</p><a class="button primary" href="./games/bombs-n-roses/">▶ Jogar Bombs'n Roses</a></div></article>
+<article class="game" data-cat="tornado" data-search="tornado classic original supercelula formacao dinamica">
+<div class="art"><div class="type">Clássico · Experimental</div>
+<svg viewBox="0 0 380 205" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cb" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#37567a"/><stop offset="1" stop-color="#13202e"/></linearGradient></defs><rect width="380" height="205" fill="url(#cb)"/><path d="M0 164 Q125 143 220 158 T380 145 L380 205 L0 205Z" fill="#263e3c"/><g opacity=".73" fill="#b4c9d8"><ellipse cx="165" cy="58" rx="136" ry="39"/><ellipse cx="224" cy="48" rx="125" ry="37"/></g><path d="M135 76 Q154 111 177 128 Q187 147 178 199 L207 199 Q202 159 221 138 Q245 108 251 78Z" fill="#869ca9" opacity=".8"/><path d="M145 102 Q179 118 233 104 M164 136 Q195 149 220 131 M177 172 Q192 164 206 172" stroke="#e3eef0" stroke-width="7" opacity=".28" fill="none"/></svg></div>
+<div class="game-body"><div class="cat">Tornado · Clássico</div><h3>Tornado Simulator</h3><p>Uma das primeiras versões do simulador, com formação dinâmica de supercélulas e tornados.</p><a class="button primary" href="./games/tornado-classic/">▶ Jogar clássico</a></div></article>
+</div>
+<p id="empty" role="status">Nenhum projeto encontrado. Tente outra busca.</p>
+<div class="note"><strong>Novos projetos chegando.</strong> Esta é a primeira seleção de jogos. Outras versões e novos simuladores serão adicionados conforme seus arquivos forem recebidos e organizados. Jogos experimentais podem exigir um computador com suporte gráfico WebGL2.</div>
+</section>
+</main>
+<footer><div class="container foot"><span><b>Murilo Game Lab</b> · Criado com curiosidade e imaginação.</span><a href="https://github.com/olirumtecapp-debug/murilo-game-lab" target="_blank" rel="noopener noreferrer">Código no GitHub ↗</a></div></footer>
+<script>
+(function(){
+  const buttons=[...document.querySelectorAll('[data-filter]')];
+  const games=[...document.querySelectorAll('.game')];
+  const input=document.querySelector('#search');
+  const count=document.querySelector('#visible-count');
+  let active='todos';
+  function update(){
+    const query=input.value.toLocaleLowerCase('pt-BR').trim();
+    let visible=0;
+    games.forEach(game=>{
+      const matchCategory=active==='todos'||active===game.dataset.cat;
+      const matchSearch=!query||((game.dataset.search+' '+game.querySelector('h3').textContent).toLocaleLowerCase('pt-BR').includes(query));
+      game.hidden=!(matchCategory&&matchSearch);
+      if(!game.hidden)visible++;
+    });
+    count.textContent=visible;
+    document.querySelector('#empty').style.display=visible?'none':'block';
+  }
+  buttons.forEach(button=>button.addEventListener('click',()=>{
+    active=button.dataset.filter;
+    buttons.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+    update();
+  }));
+  input.addEventListener('input',update);
+})();
+</script>
+</body>
+</html>
