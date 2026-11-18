@@ -1,0 +1,36 @@
+name: Otimizar Skyfall e validar JavaScript
+
+on:
+  push:
+    branches:
+      - otimizacao-jogos-2026
+    paths:
+      - 'tools/otimizar-skyfall.py'
+      - '.github/workflows/otimizar-skyfall.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  otimizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Aplicar otimização cirúrgica
+        run: python3 tools/otimizar-skyfall.py
+      - name: Verificar sintaxe JavaScript do Skyfall
+        run: node --check games/skyfall/game.js
+      - name: Registrar otimização
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/skyfall/game.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Skyfall: reduzir trabalho em segundo plano e no menu"
+            git push origin HEAD:otimizacao-jogos-2026
+          fi
